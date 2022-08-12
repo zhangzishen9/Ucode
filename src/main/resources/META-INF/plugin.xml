@@ -10,12 +10,12 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="zhangzishen9@163.com" >sanhuo</vendor>
+    <vendor email="zhangzishen9@163.com">sanhuo</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-<!--    <description>this plugin is count what your code</description>-->
+    <!--    <description>this plugin is count what your code</description>-->
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
@@ -24,6 +24,10 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-
+        <preloadingActivity implementation="com.sanhuo.ucode.application.CodeTimeApplication"/>
+        <editorFactoryDocumentListener implementation="com.sanhuo.ucode.listener.CodeEditListener"/>
+        <toolWindow id="CodeTimeRightMenu" factoryClass="com.sanhuo.ucode.toolwindow.CodeTimeToolWindowFactory" icon="AllIcons.General.Modified"
+                    anchor="right" secondary="true"/>
     </extensions>
+
 </idea-plugin>

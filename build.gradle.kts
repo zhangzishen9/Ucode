@@ -1,3 +1,5 @@
+import org.jetbrains.intellij.tasks.RunIdeTask
+
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "1.7.0"
@@ -19,12 +21,19 @@ intellij {
     plugins.set(listOf(/* Plugin Dependencies */))
 }
 
+dependencies{
+    implementation("com.alibaba:fastjson:1.2.75")
+    compileOnly("org.projectlombok:lombok:1.18.20")
+    annotationProcessor("org.projectlombok:lombok:1.18.20")
+}
+
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
         sourceCompatibility = "11"
         targetCompatibility = "11"
     }
+
 
     patchPluginXml {
         sinceBuild.set("212")
@@ -42,3 +51,5 @@ tasks {
     }
 
 }
+
+
