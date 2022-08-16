@@ -5,6 +5,9 @@ import com.intellij.openapi.application.PreloadingActivity;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.sanhuo.ucode.cache.Cache;
 import com.sanhuo.ucode.cache.CodeTimeCache;
+import com.sanhuo.ucode.container.CacheComponentContainer;
+import com.sanhuo.ucode.container.ContainerManager;
+import com.sanhuo.ucode.schedule.CodeTimePersistenceTimer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,8 +23,12 @@ public class CodeTimeApplication extends PreloadingActivity {
 
     @Override
     public void preload(@NotNull ProgressIndicator indicator) {
+        CacheComponentContainer container = ContainerManager.getContainer(CacheComponentContainer.class);
         for (Class<? extends Cache> target : INIT_CACHE_LIST) {
-            ComponentManager.createBean(target);
+            container.createBean(target);
         }
+        CodeTimePersistenceTimer timer = new CodeTimePersistenceTimer();
+        timer.run();
+
     }
 }

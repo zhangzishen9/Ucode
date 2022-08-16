@@ -5,11 +5,12 @@ import com.sanhuo.ucode.cache.Cache;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.sanhuo.ucode.constant.CodeTimeConstant.*;
 
@@ -36,6 +37,7 @@ public abstract class CsvFilePersistence<T extends Cache> implements Persistence
             content.append(entry.getKey()).append(CSV_SPILT).append(entry.getValue()).append(CSV_LINE);
         }
         String file = this.getPersistenceCsvFilename();
+        this.check(file);
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             IOUtils.write(content.toString().getBytes(), fileOutputStream);
         } catch (Exception e) {
@@ -75,7 +77,10 @@ public abstract class CsvFilePersistence<T extends Cache> implements Persistence
         if (index != -1) {
             File directory = new File(file.substring(0, index));
             if (!directory.exists() || !directory.isDirectory()) {
-                directory.mkdirs();
+                boolean flag = directory.mkdirs();
+                if (!flag) {
+                    log.error("mkdir directory[{}] error", directory.getAbsolutePath());
+                }
             }
         }
     }

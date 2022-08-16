@@ -1,20 +1,19 @@
 package com.sanhuo.ucode.toolwindow;
 
 import com.intellij.openapi.wm.ToolWindow;
-import com.sanhuo.ucode.application.ComponentManager;
 import com.sanhuo.ucode.cache.CodeTimeCache;
+import com.sanhuo.ucode.container.CacheComponentContainer;
+import com.sanhuo.ucode.container.ContainerManager;
 
 import javax.swing.*;
-import java.util.Calendar;
 
 /**
  * @author zhangzs
  * @description 右侧菜单
  * @date 2022/8/10 17:04
  **/
-public class CodeTimeToolWindow {
-
-    private JPanel CodeTimeToolWindowContent;
+public class CodeTimeToolWindow extends AbstractToolWindow {
+    private JPanel content;
     private JLabel TodayCodeTimeTitle;
     private JLabel TodayActiveCodeTimeTitle;
     private JLabel IncreaseCodeNumberTitle;
@@ -25,20 +24,22 @@ public class CodeTimeToolWindow {
     private JLabel DecreaseCodeNumber;
 
     public CodeTimeToolWindow(ToolWindow toolWindow) {
+        super(toolWindow);
         this.flush();
     }
 
+
+    @Override
     public void flush() {
-        CodeTimeCache codeTimeCache = ComponentManager.getBean(CodeTimeCache.class);
+        CodeTimeCache codeTimeCache = (CodeTimeCache) ContainerManager.getContainer(CacheComponentContainer.class).getBean(CodeTimeCache.class);
         TodayCodeTime.setText(codeTimeCache.getTodayCodeTime());
         TodayActiveCodeTime.setText(codeTimeCache.getTodayActiveCodeTime());
         IncreaseCodeNumber.setText(codeTimeCache.getIncreaseCodeNumber() + "");
         DecreaseCodeNumber.setText(codeTimeCache.getDecreaseCodeNumber() + "");
     }
 
-    public JPanel getContent() {
-        return CodeTimeToolWindowContent;
+    @Override
+    JPanel getContent() {
+        return content;
     }
-
-
 }
