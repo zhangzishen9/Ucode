@@ -49,33 +49,17 @@ public class CodeEditListener implements DocumentListener {
                 if (file != null && !file.isDirectory()) {
                     Editor[] editors = EditorFactory.getInstance().getEditors(document);
                     if (editors != null && editors.length > 0) {
-                        String fileName = file.getPath();
-                        String text = event.getNewFragment().toString();
-                        String oldText = event.getOldFragment().toString();
+                        String text = event.getNewFragment().toString().trim();
+                        String oldText = event.getOldFragment().toString().trim();
 
+                        int decreaseCodeNumber = oldText.length();
+                        int increaseCodeNumber = text.length();
 
-                        // this will give us the positive char change length
-                        int numKeystrokes = event.getNewLength();
-                        // this will tell us delete chars
-                        int numDeleteKeystrokes = event.getOldLength();
-
-                        // count the newline chars
-                        int linesAdded = getNewlineCount(text);
-                        int linesRemoved = getNewlineCount(oldText);
-
-                        // check if its an auto indent
-                        boolean hasAutoIndent = text.matches("^\\s{2,4}$") || TAB_PATTERN.matcher(text).find();
-                        boolean newLineAutoIndent = text.matches("^\n\\s{2,4}$") || NEW_LINE_TAB_PATTERN.matcher(text).find();
-
-                        // update the deletion keystrokes if there are lines removed
-                        numDeleteKeystrokes = numDeleteKeystrokes >= linesRemoved ? numDeleteKeystrokes - linesRemoved : numDeleteKeystrokes;
-                        int new_line_count = document.getLineCount();
-
-                        if (numDeleteKeystrokes > 0) {
-                            cache.setDecreaseCodeNumber(cache.getDecreaseCodeNumber() + numDeleteKeystrokes);
+                        if (decreaseCodeNumber > 0) {
+                            cache.setDecreaseCodeNumber(cache.getDecreaseCodeNumber() + decreaseCodeNumber);
                         }
-                        if (numKeystrokes > 0) {
-                            cache.setIncreaseCodeNumber(cache.getIncreaseCodeNumber() + numKeystrokes);
+                        if (increaseCodeNumber > 0) {
+                            cache.setIncreaseCodeNumber(cache.getIncreaseCodeNumber() + increaseCodeNumber);
                         }
                         ContainerManager.getContainer(ToolWindowComponentContainer.class).getBean(CodeTimeToolWindow.class).flush();
 
