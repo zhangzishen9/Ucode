@@ -7,6 +7,8 @@ import com.sanhuo.ucode.cache.Cache;
 import com.sanhuo.ucode.cache.CodeTimeCache;
 import com.sanhuo.ucode.container.CacheComponentContainer;
 import com.sanhuo.ucode.container.ContainerManager;
+import com.sanhuo.ucode.schedule.CodeTimeCacheFlushTimer;
+import com.sanhuo.ucode.schedule.CodeTimeEventTimer;
 import com.sanhuo.ucode.schedule.CodeTimePersistenceTimer;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +30,11 @@ public class CodeTimeApplication extends PreloadingActivity {
             container.createBean(target);
         }
         CodeTimePersistenceTimer timer = new CodeTimePersistenceTimer();
+        CodeTimeCacheFlushTimer timer1 = new CodeTimeCacheFlushTimer();
+        CodeTimeEventTimer timer2 = new CodeTimeEventTimer();
         timer.run();
+        timer1.run();
+        timer2.run();
 
     }
 }

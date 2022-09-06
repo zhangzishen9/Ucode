@@ -13,6 +13,8 @@
   - [ ] container optimization
   - [ ] increase and decrease code number optimization
   - [ ] scan package and auto register bean
+  - [ ] debugger mode
+  - [ ] words number 
 - [ ] package and class route optimization
 
 ## after version

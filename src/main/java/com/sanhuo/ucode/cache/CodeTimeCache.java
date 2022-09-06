@@ -3,6 +3,8 @@ package com.sanhuo.ucode.cache;
 import com.sanhuo.ucode.persistence.CodeTimeCachePersistence;
 import com.sanhuo.ucode.persistence.PersistenceFor;
 
+import java.util.Date;
+
 /**
  * @author zhangzs
  * @description
@@ -13,10 +15,29 @@ import com.sanhuo.ucode.persistence.PersistenceFor;
 public class CodeTimeCache implements Cache {
 
     private static final long serialVersionUID = 4862937873436864445L;
-    private String TodayCodeTime = "0";
-    private String TodayActiveCodeTime = "0";
+    private String TodayCodeTime = "";
+    private String TodayActiveCodeTime = "";
     private Integer IncreaseCodeNumber = 0;
     private Integer DecreaseCodeNumber = 0;
+    private Integer IncreaseWordNumber = 0;
+
+    private Date cacheDate;
+
+    public Integer getIncreaseWordNumber() {
+        return IncreaseWordNumber;
+    }
+
+    public void setIncreaseWordNumber(Integer increaseWordNumber) {
+        IncreaseWordNumber = increaseWordNumber;
+    }
+
+    public Date getCacheDate() {
+        return cacheDate;
+    }
+
+    public void setCacheDate(Date cacheDate) {
+        this.cacheDate = cacheDate;
+    }
 
     public String getTodayCodeTime() {
         return TodayCodeTime;

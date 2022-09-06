@@ -30,5 +30,6 @@ public class CodeTimeCachePersistence extends CsvFilePersistence<CodeTimeCache> 
     void initData(Map<String, String> csvDataMap, CodeTimeCache codeTimeCache) {
         PropertiesHelper helper = new PropertiesHelper(CodeTimeCache.class);
         helper.copyProperties(csvDataMap, codeTimeCache);
+        codeTimeCache.setCacheDate(new Date());
     }
 }

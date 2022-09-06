@@ -40,6 +40,7 @@ public abstract class CsvFilePersistence<T extends Cache> implements Persistence
         this.check(file);
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             IOUtils.write(content.toString().getBytes(), fileOutputStream);
+            log.info("persistence csv file : {} success ", file);
         } catch (Exception e) {
             log.error("persistence csv file: {} error : {}", file, e.getMessage());
         }

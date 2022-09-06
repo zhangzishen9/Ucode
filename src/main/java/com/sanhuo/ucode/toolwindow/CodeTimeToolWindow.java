@@ -22,6 +22,8 @@ public class CodeTimeToolWindow extends AbstractToolWindow {
     private JLabel TodayActiveCodeTime;
     private JLabel IncreaseCodeNumber;
     private JLabel DecreaseCodeNumber;
+    private JLabel IncreaseWordNumberTitle;
+    private JLabel IncreaseWordNumber;
 
     public CodeTimeToolWindow(ToolWindow toolWindow) {
         super(toolWindow);
