@@ -1,6 +1,6 @@
-package com.sanhuo.ucode.cache;
+package com.sanhuo.ucode.codetime;
 
-import com.sanhuo.ucode.persistence.CodeTimeCachePersistence;
+import com.sanhuo.ucode.cache.Cache;
 import com.sanhuo.ucode.persistence.PersistenceFor;
 
 import java.util.Date;

@@ -1,8 +1,9 @@
-package com.sanhuo.ucode.toolwindow;
+package com.sanhuo.ucode.codetime;
 
 import com.intellij.openapi.wm.ToolWindow;
-import com.sanhuo.ucode.cache.CodeTimeCache;
+import com.sanhuo.ucode.codetime.CodeTimeCache;
 import com.sanhuo.ucode.container.ContainerManager;
+import com.sanhuo.ucode.toolwindow.AbstractToolWindow;
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;

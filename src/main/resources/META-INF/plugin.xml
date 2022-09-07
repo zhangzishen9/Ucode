@@ -26,7 +26,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <preloadingActivity implementation="com.sanhuo.ucode.application.CodeTimeApplication"/>
         <editorFactoryDocumentListener implementation="com.sanhuo.ucode.listener.CodeEditListener"/>
-        <toolWindow id="CodeTimeRightMenu" factoryClass="com.sanhuo.ucode.toolwindow.CodeTimeToolWindowFactory" icon="AllIcons.General.Modified"
+        <toolWindow id="CodeTimeRightMenu" factoryClass="com.sanhuo.ucode.codetime.CodeTimeToolWindowFactory" icon="AllIcons.General.Modified"
                     anchor="right" secondary="true"/>
     </extensions>
 

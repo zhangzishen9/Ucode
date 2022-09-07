@@ -3,6 +3,7 @@ package com.sanhuo.ucode.listener;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
+import com.sanhuo.ucode.codetime.CodeTimeEventHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 

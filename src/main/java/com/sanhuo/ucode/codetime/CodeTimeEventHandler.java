@@ -1,4 +1,4 @@
-package com.sanhuo.ucode.listener;
+package com.sanhuo.ucode.codetime;
 
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.editor.Document;
@@ -7,9 +7,7 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.sanhuo.ucode.cache.CodeTimeCache;
 import com.sanhuo.ucode.container.ContainerManager;
-import com.sanhuo.ucode.toolwindow.CodeTimeToolWindow;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
