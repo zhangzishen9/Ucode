@@ -23,6 +23,12 @@ public class ContainerManager {
     public static <T> void putBean(Class<? extends T> beanClas, T bean) {
         putBean(getDefaultName(beanClas), bean);
     }
+
+    public static <T> void putBeanIfNonExist(Class<? extends T> beanClas, T bean) {
+        if(!componentMap.containsKey(getDefaultName(beanClas))){
+            putBean(getDefaultName(beanClas), bean);
+        }
+    }
     
     public static <T> void putBean(String name, T bean) {
         componentMap.put(name, bean);

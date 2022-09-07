@@ -3,15 +3,18 @@ import org.jetbrains.intellij.tasks.RunIdeTask
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "1.7.0"
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 group = "com.sanhuo"
-version = "1.1.0-SNAPSHOT"
+version = "1.1.1-SNAPSHOT"
 
 repositories {
     maven("https://maven.aliyun.com/nexus/content/groups/public/")
     mavenCentral()
 }
+
+
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
@@ -21,7 +24,7 @@ intellij {
     plugins.set(listOf(/* Plugin Dependencies */))
 }
 
-dependencies{
+dependencies {
     implementation("com.alibaba:fastjson:1.2.75")
     compileOnly("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
@@ -51,5 +54,3 @@ tasks {
     }
 
 }
-
-

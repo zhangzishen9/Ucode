@@ -18,7 +18,7 @@ public class CodeTimeToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         CodeTimeToolWindow codeTimeToolWindow = new CodeTimeToolWindow(toolWindow);
-        ContainerManager.putBean(CodeTimeToolWindow.class, codeTimeToolWindow);
+        ContainerManager.putBeanIfNonExist(CodeTimeToolWindow.class, codeTimeToolWindow);
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(codeTimeToolWindow.getContent(), "", false);
         codeTimeToolWindow.flush();
