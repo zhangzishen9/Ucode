@@ -1,5 +1,6 @@
 package com.sanhuo.ucode.util;
 
+import com.intellij.ide.plugins.PluginManager;
 import com.sanhuo.ucode.persistence.Persistence;
 import com.sanhuo.ucode.persistence.PersistenceFor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class PersistenceUtil {
             persistence = persistenceFor.value().getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             //todo
-            log.error("get persistence error:{}", e.getMessage());
+             PluginManager.getLogger().error("get persistence error:{}", e.getMessage());
         }
         return persistence;
     }

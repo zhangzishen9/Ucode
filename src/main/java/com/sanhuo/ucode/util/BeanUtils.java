@@ -5,6 +5,7 @@
 
 package com.sanhuo.ucode.util;
 
+import com.intellij.ide.plugins.PluginManager;
 import lombok.extern.slf4j.Slf4j;
 
 import java.beans.BeanInfo;
@@ -27,7 +28,7 @@ public class BeanUtils {
                 beanPropertyDescriptorMap.put(target, new ArrayList<>(Arrays.asList(beanInfo.getPropertyDescriptors())));
             }
         } catch (Exception e) {
-            log.error("get class : {} properties error: {}", target.getName(), e.getMessage());
+            PluginManager.getLogger().error(String.format("get class : %s properties error: %s", target.getName(), e.getMessage()));
         }
         return beanPropertyDescriptorMap.getOrDefault(target, new ArrayList<>());
     }

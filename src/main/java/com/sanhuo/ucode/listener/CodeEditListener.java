@@ -1,13 +1,12 @@
 package com.sanhuo.ucode.listener;
 
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
-import com.sanhuo.ucode.schedule.CodeTimeEventTimer;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -19,17 +18,20 @@ import java.util.concurrent.locks.ReentrantLock;
 public class CodeEditListener implements DocumentListener {
     private static final ReentrantLock lock = new ReentrantLock();
 
-    private static CodeTimeEventTimer currentEventListener = null;
+    private static CodeTimeEventHandler currentEventListener = null;
 
 
     private static Integer currentOffset = null;
 
     @Override
     public void documentChanged(@NotNull DocumentEvent event) {
+        if (isMultiLine(event)) {
+            return;
+        }
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 if (currentEventListener == null) {
-                    currentEventListener = new CodeTimeEventTimer();
+                    currentEventListener = new CodeTimeEventHandler();
                     currentEventListener.push(event);
                     currentOffset = event.getOffset();
                 } else {
@@ -37,7 +39,7 @@ public class CodeEditListener implements DocumentListener {
                         currentEventListener.push(event);
                     } else {
                         currentEventListener.run();
-                        currentEventListener = new CodeTimeEventTimer();
+                        currentEventListener = new CodeTimeEventHandler();
                         currentEventListener.push(event);
                         currentOffset = event.getOffset();
                     }
@@ -45,10 +47,22 @@ public class CodeEditListener implements DocumentListener {
             }
 
         } catch (Exception e) {
-            log.error("code time listener error : {}", e.getMessage());
+            PluginManager.getLogger().error("code time listener error : {}", e.getMessage());
         } finally {
             lock.unlock();
         }
+    }
+
+
+    /**
+     * 一次变动多行的不计算
+     * @param documentEvent
+     * @return
+     */
+    private boolean isMultiLine(DocumentEvent documentEvent) {
+        String text = documentEvent.getNewFragment() != null ? documentEvent.getNewFragment().toString() : "";
+        String oldText = documentEvent.getOldFragment() != null ? documentEvent.getOldFragment().toString() : "";
+        return text.contains("\r") || text.contains("\n") || oldText.contains("\n") || oldText.contains("\r");
     }
 
 

@@ -1,6 +1,7 @@
 package com.sanhuo.ucode.helper;
 
 import com.alibaba.fastjson.JSONObject;
+import com.intellij.ide.plugins.PluginManager;
 import com.sanhuo.ucode.cache.Cache;
 import com.sanhuo.ucode.util.BeanUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,9 @@ public class PropertiesHelper<T extends Cache> {
         this.target = target;
         List<PropertyDescriptor> propertyDescriptors = BeanUtils.getPropertyDescriptors(target);
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            if("class".equals(propertyDescriptor.getName())){
+                continue;
+            }
             writeMethodMap.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
             readMethodMap.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
             typeMap.put(propertyDescriptor.getName(), propertyDescriptor.getPropertyType());
@@ -59,7 +63,7 @@ public class PropertiesHelper<T extends Cache> {
                 }
             }
         } catch (Exception e) {
-            log.error("copy property[{}] error : {}", property, e.getMessage());
+             PluginManager.getLogger().error("copy property[{}] error : {}", property, e.getMessage());
         }
     }
 }

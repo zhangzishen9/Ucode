@@ -1,17 +1,21 @@
 # now version support
-> now version : 1.0.0
+> now version : 1.1.0
 - code time tool window
-  - show increase and decrease code number each time
-  - persistence code time by file (fixed time but cannot setting)
+  - 显示每日的新增/删除代码数
+  - 显示昨日的数据
+  - 保存数据(文件形式)来保证关闭idea重新打开数据记录还在
 
 # todo list
 ## finish list
+- [X] 调整包目录
+- [X] 容器优化
+- [X] 优化计算新增/删除的代码数
+  - 不计算整行以上的代码变更
+  - 修复输入法会重复计算的bug
+- [x] 修复第二天还会拿第一天的数据的bug
 ## next version 
 
 - code time tool window
-  - [ ] code active time
-  - [ ] container optimization
-  - [ ] increase and decrease code number optimization
   - [ ] scan package and auto register bean
   - [ ] debugger mode
   - [ ] words number 

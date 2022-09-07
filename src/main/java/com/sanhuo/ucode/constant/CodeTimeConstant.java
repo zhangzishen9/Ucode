@@ -24,6 +24,6 @@ public class CodeTimeConstant {
 
     public static final String CSV_LINE = "\\r\\n";
 
-    public static final String USER_DIR = "user.dir";
+    public static final String USER_DIR = "user.home";
 
 }

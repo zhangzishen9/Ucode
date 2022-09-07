@@ -1,22 +1,17 @@
-package com.sanhuo.ucode.schedule;
+package com.sanhuo.ucode.listener;
 
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.sanhuo.ucode.cache.Cache;
 import com.sanhuo.ucode.cache.CodeTimeCache;
-import com.sanhuo.ucode.container.CacheComponentContainer;
 import com.sanhuo.ucode.container.ContainerManager;
-import com.sanhuo.ucode.container.ToolWindowComponentContainer;
-import com.sanhuo.ucode.listener.CodeEditListener;
 import com.sanhuo.ucode.toolwindow.CodeTimeToolWindow;
-import com.sanhuo.ucode.util.PersistenceUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -27,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2022/8/16 19:14
  **/
 @Slf4j
-public class CodeTimeEventTimer {
+public class CodeTimeEventHandler {
 
     private static final ReentrantLock lock = new ReentrantLock();
     private LinkedList<DocumentEvent> eventList = new LinkedList<>();
@@ -39,7 +34,7 @@ public class CodeTimeEventTimer {
     public void run() {
         try {
             if (lock.tryLock(500, TimeUnit.MILLISECONDS)) {
-                CodeTimeCache cache = (CodeTimeCache) ContainerManager.getContainer(CacheComponentContainer.class).getBean(CodeTimeCache.class);
+                CodeTimeCache cache = ContainerManager.getBean(CodeTimeCache.TODAY_CACHE);
                 DocumentEvent event = eventList.pollLast();
                 Document document = event.getDocument();
                 FileDocumentManager instance = FileDocumentManager.getInstance();
@@ -60,14 +55,14 @@ public class CodeTimeEventTimer {
                             if (increaseCodeNumber > 0) {
                                 cache.setIncreaseCodeNumber(cache.getIncreaseCodeNumber() + increaseCodeNumber);
                             }
-                            ContainerManager.getContainer(ToolWindowComponentContainer.class).getBean(CodeTimeToolWindow.class).flush();
+                            ContainerManager.getBean(CodeTimeToolWindow.class).flush();
 
                         }
                     }
                 }
             }
         } catch (Exception e) {
-            log.error("error: {}", e.getMessage());
+            PluginManager.getLogger().error("error: {}", e.getMessage());
         } finally {
             lock.unlock();
         }

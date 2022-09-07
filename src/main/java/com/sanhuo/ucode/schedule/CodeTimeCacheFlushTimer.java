@@ -1,14 +1,15 @@
 package com.sanhuo.ucode.schedule;
 
+import com.intellij.ide.plugins.PluginManager;
 import com.sanhuo.ucode.cache.Cache;
 import com.sanhuo.ucode.cache.CodeTimeCache;
-import com.sanhuo.ucode.container.CacheComponentContainer;
 import com.sanhuo.ucode.container.ContainerManager;
+import com.sanhuo.ucode.toolwindow.CodeTimeToolWindow;
+import com.sanhuo.ucode.util.LogUtils;
 import com.sanhuo.ucode.util.PersistenceUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,15 +24,19 @@ public class CodeTimeCacheFlushTimer {
     public void run() {
         TimerTask task = new TimerTask() {
             public void run() {
-                CodeTimeCache cache = (CodeTimeCache) ContainerManager.getContainer(CacheComponentContainer.class).getBean(CodeTimeCache.class);
+                CodeTimeCache cache = (CodeTimeCache) ContainerManager.getBean(CodeTimeCache.TODAY_CACHE);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    if (!sdf.format(cache.getCacheDate()).equals(sdf.format(new Date()))) {
-                        Cache newCache = PersistenceUtil.getPersistence(CodeTimeCache.class).dePersistence();
-                        ContainerManager.getContainer(CacheComponentContainer.class).putBean(CodeTimeCache.class, newCache);
+                    if (cache.getCacheDate() != null) {
+                        if (!sdf.format(cache.getCacheDate()).equals(sdf.format(new Date()))) {
+                            Cache newCache = PersistenceUtil.getPersistence(CodeTimeCache.class).dePersistence();
+                            ContainerManager.putBean(CodeTimeCache.TODAY_CACHE, newCache);
+                            ContainerManager.putBean(CodeTimeCache.YESTERDAY_CACHE, cache);
+                            ContainerManager.getBean(CodeTimeToolWindow.class).flush();
+                        }
                     }
                 } catch (Exception e) {
-                    log.info("flush error,e:{}", e.getMessage());
+                    LogUtils.error("flush error,e:{}", e.getMessage());
                 }
 
             }

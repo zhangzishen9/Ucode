@@ -14,45 +14,22 @@ import java.util.Date;
 @PersistenceFor(CodeTimeCachePersistence.class)
 public class CodeTimeCache implements Cache {
 
+    public final static String TODAY_CACHE = "todayCodeTimeCache";
+    public final static String YESTERDAY_CACHE = "yesterdayCodeTimeCache";
+
     private static final long serialVersionUID = 4862937873436864445L;
-    private String TodayCodeTime = "";
-    private String TodayActiveCodeTime = "";
     private Integer IncreaseCodeNumber = 0;
     private Integer DecreaseCodeNumber = 0;
-    private Integer IncreaseWordNumber = 0;
-
     private Date cacheDate;
 
-    public Integer getIncreaseWordNumber() {
-        return IncreaseWordNumber;
-    }
 
-    public void setIncreaseWordNumber(Integer increaseWordNumber) {
-        IncreaseWordNumber = increaseWordNumber;
-    }
-
+    @Override
     public Date getCacheDate() {
         return cacheDate;
     }
 
     public void setCacheDate(Date cacheDate) {
         this.cacheDate = cacheDate;
-    }
-
-    public String getTodayCodeTime() {
-        return TodayCodeTime;
-    }
-
-    public void setTodayCodeTime(String todayCodeTime) {
-        TodayCodeTime = todayCodeTime;
-    }
-
-    public String getTodayActiveCodeTime() {
-        return TodayActiveCodeTime;
-    }
-
-    public void setTodayActiveCodeTime(String todayActiveCodeTime) {
-        TodayActiveCodeTime = todayActiveCodeTime;
     }
 
     public Integer getIncreaseCodeNumber() {

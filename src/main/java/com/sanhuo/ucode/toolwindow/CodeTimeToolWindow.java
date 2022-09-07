@@ -2,10 +2,11 @@ package com.sanhuo.ucode.toolwindow;
 
 import com.intellij.openapi.wm.ToolWindow;
 import com.sanhuo.ucode.cache.CodeTimeCache;
-import com.sanhuo.ucode.container.CacheComponentContainer;
 import com.sanhuo.ucode.container.ContainerManager;
 
 import javax.swing.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author zhangzs
@@ -14,16 +15,13 @@ import javax.swing.*;
  **/
 public class CodeTimeToolWindow extends AbstractToolWindow {
     private JPanel content;
-    private JLabel TodayCodeTimeTitle;
-    private JLabel TodayActiveCodeTimeTitle;
     private JLabel IncreaseCodeNumberTitle;
     private JLabel DecreaseCodeNumberTitle;
-    private JLabel TodayCodeTime;
-    private JLabel TodayActiveCodeTime;
     private JLabel IncreaseCodeNumber;
     private JLabel DecreaseCodeNumber;
-    private JLabel IncreaseWordNumberTitle;
-    private JLabel IncreaseWordNumber;
+    private JLabel YesterdayIncreaseCodeNumber;
+    private JLabel YesterdayDecreaseCodeNumber;
+    private JLabel Today;
 
     public CodeTimeToolWindow(ToolWindow toolWindow) {
         super(toolWindow);
@@ -33,11 +31,14 @@ public class CodeTimeToolWindow extends AbstractToolWindow {
 
     @Override
     public void flush() {
-        CodeTimeCache codeTimeCache = (CodeTimeCache) ContainerManager.getContainer(CacheComponentContainer.class).getBean(CodeTimeCache.class);
-        TodayCodeTime.setText(codeTimeCache.getTodayCodeTime());
-        TodayActiveCodeTime.setText(codeTimeCache.getTodayActiveCodeTime());
+        CodeTimeCache codeTimeCache = (CodeTimeCache) ContainerManager.getBean(CodeTimeCache.TODAY_CACHE);
+        CodeTimeCache yesterdayCache = (CodeTimeCache) ContainerManager.getBean(CodeTimeCache.YESTERDAY_CACHE);
         IncreaseCodeNumber.setText(codeTimeCache.getIncreaseCodeNumber() + "");
         DecreaseCodeNumber.setText(codeTimeCache.getDecreaseCodeNumber() + "");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        YesterdayDecreaseCodeNumber.setText(yesterdayCache != null ? yesterdayCache.getIncreaseCodeNumber() + "" : "0");
+        YesterdayIncreaseCodeNumber.setText(yesterdayCache != null ? yesterdayCache.getDecreaseCodeNumber() + "" : "0");
+        Today.setText(sdf.format(codeTimeCache.getCacheDate() != null ? codeTimeCache.getCacheDate() : new Date()));
     }
 
     @Override

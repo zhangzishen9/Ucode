@@ -6,7 +6,6 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.sanhuo.ucode.container.ContainerManager;
-import com.sanhuo.ucode.container.ToolWindowComponentContainer;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -19,9 +18,10 @@ public class CodeTimeToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         CodeTimeToolWindow codeTimeToolWindow = new CodeTimeToolWindow(toolWindow);
-        ContainerManager.getContainer(ToolWindowComponentContainer.class).putBean(CodeTimeToolWindow.class, codeTimeToolWindow);
+        ContainerManager.putBean(CodeTimeToolWindow.class, codeTimeToolWindow);
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(codeTimeToolWindow.getContent(), "", false);
+        codeTimeToolWindow.flush();
         toolWindow.getContentManager().addContent(content);
     }
 }

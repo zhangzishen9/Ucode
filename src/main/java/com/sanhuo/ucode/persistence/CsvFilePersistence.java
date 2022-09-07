@@ -1,7 +1,9 @@
 package com.sanhuo.ucode.persistence;
 
-import com.alibaba.fastjson.JSONObject;
+import com.intellij.ide.plugins.PluginManager;
+import com.sampullara.cli.Args;
 import com.sanhuo.ucode.cache.Cache;
+import com.sanhuo.ucode.util.LogUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
@@ -9,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,31 +22,46 @@ import static com.sanhuo.ucode.constant.CodeTimeConstant.*;
  * @description
  * @date 2022/8/11 18:35
  **/
-@Slf4j
 public abstract class CsvFilePersistence<T extends Cache> implements Persistence<T> {
     protected static final String DIRECTORY = System.getProperty(USER_DIR);
 
 
-    abstract String getPersistenceCsvFilename();
+    abstract String getPersistenceCsvFilename(Object... args);
 
     @Override
-    public void doPersistence(T cache) {
+    public void doPersistence(T cache, Object... args) {
         if (cache == null) {
             return;
         }
-        Map<String, Object> cacheMap = JSONObject.parseObject(JSONObject.toJSONString(cache), Map.class);
+        Map<String, Object> cacheMap = toMap(cache);
         StringBuilder content = new StringBuilder();
         for (Map.Entry<String, Object> entry : cacheMap.entrySet()) {
             content.append(entry.getKey()).append(CSV_SPILT).append(entry.getValue()).append(CSV_LINE);
         }
-        String file = this.getPersistenceCsvFilename();
+        String file = this.getPersistenceCsvFilename(args);
         this.check(file);
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             IOUtils.write(content.toString().getBytes(), fileOutputStream);
-            log.info("persistence csv file : {} success ", file);
+            LogUtils.info("persistence csv file : {} success ", file);
         } catch (Exception e) {
-            log.error("persistence csv file: {} error : {}", file, e.getMessage());
+            LogUtils.error("persistence csv file: {} error : {}", file, e.getMessage());
         }
+    }
+
+    private Map<String, Object> toMap(Cache cache) {
+        Map<String, Object> result = new HashMap<>();
+        Class<? extends Cache> target = cache.getClass();
+        Field[] fields = target.getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                Object value = field.get(cache);
+                result.put(field.getName(), value);
+            } catch (Exception e) {
+                LogUtils.error("get Value error {}", e.getMessage());
+            }
+        }
+        return result;
     }
 
     abstract T newInstance();
@@ -51,8 +69,8 @@ public abstract class CsvFilePersistence<T extends Cache> implements Persistence
     abstract void initData(Map<String, String> csvDataMap, T cache);
 
     @Override
-    public T dePersistence() {
-        String path = this.getPersistenceCsvFilename();
+    public T dePersistence(Object... args) {
+        String path = this.getPersistenceCsvFilename(args);
         this.check(path);
         File file = new File(path);
         T cache = this.newInstance();
@@ -67,7 +85,7 @@ public abstract class CsvFilePersistence<T extends Cache> implements Persistence
             });
             this.initData(csvDataMap, cache);
         } catch (Exception e) {
-            log.error("de persistence csv file: {} error : {}", file, e.getMessage());
+            LogUtils.error("de persistence csv file: {} error : {}", e, file.getAbsolutePath());
         }
         return cache;
     }
@@ -80,7 +98,7 @@ public abstract class CsvFilePersistence<T extends Cache> implements Persistence
             if (!directory.exists() || !directory.isDirectory()) {
                 boolean flag = directory.mkdirs();
                 if (!flag) {
-                    log.error("mkdir directory[{}] error", directory.getAbsolutePath());
+                    PluginManager.getLogger().error(String.format("mkdir directory[%s] error", directory.getAbsolutePath()));
                 }
             }
         }

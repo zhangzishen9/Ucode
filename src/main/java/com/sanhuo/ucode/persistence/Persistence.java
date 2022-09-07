@@ -12,10 +12,10 @@ public interface Persistence<T extends Cache> {
     /**
      * do Persistence
      */
-    void doPersistence(T cache);
+    void doPersistence(T cache,Object...args);
 
     /**
      * do dePersistence
      */
-    T dePersistence();
+    T dePersistence(Object...args);
 }
