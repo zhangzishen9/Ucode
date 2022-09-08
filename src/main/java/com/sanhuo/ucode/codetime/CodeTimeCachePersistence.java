@@ -18,18 +18,18 @@ import static com.sanhuo.ucode.constant.CodeTimeConstant.*;
 public class CodeTimeCachePersistence extends CsvFilePersistence<CodeTimeCache> {
 
     @Override
-    String getPersistenceCsvFilename(Object... args) {
+    protected String getPersistenceCsvFilename(Object... args) {
         Date date = args != null && args.length > 1 && args[1] instanceof Date ? (Date) args[1] : new Date();
         return String.format(CODE_TIME_FILE_TEMPLATE, DIRECTORY, new SimpleDateFormat(CODE_TIME_FILE_SUFFIX_DATE_FORMAT).format(date));
     }
 
     @Override
-    CodeTimeCache newInstance() {
+    protected CodeTimeCache newInstance() {
         return new CodeTimeCache();
     }
 
     @Override
-    void initData(Map<String, String> csvDataMap, CodeTimeCache codeTimeCache) {
+    protected void initData(Map<String, String> csvDataMap, CodeTimeCache codeTimeCache) {
         PropertiesHelper helper = new PropertiesHelper(CodeTimeCache.class);
         helper.copyProperties(csvDataMap, codeTimeCache);
         codeTimeCache.setCacheDate(new Date());

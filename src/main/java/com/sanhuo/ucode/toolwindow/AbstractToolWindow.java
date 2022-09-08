@@ -20,8 +20,8 @@ public abstract class AbstractToolWindow {
     /**
      * flush tool window data
      */
-    abstract public void flush();
+    public abstract  void flush();
 
-    abstract JPanel getContent();
+    public abstract JPanel getContent();
 
 }

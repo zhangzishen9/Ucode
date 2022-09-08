@@ -3,6 +3,7 @@ package com.sanhuo.ucode.persistence;
 import com.intellij.ide.plugins.PluginManager;
 import com.sampullara.cli.Args;
 import com.sanhuo.ucode.cache.Cache;
+import com.sanhuo.ucode.codetime.CodeTimeCache;
 import com.sanhuo.ucode.util.LogUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -25,8 +26,23 @@ import static com.sanhuo.ucode.constant.CodeTimeConstant.*;
 public abstract class CsvFilePersistence<T extends Cache> implements Persistence<T> {
     protected static final String DIRECTORY = System.getProperty(USER_DIR);
 
+    public static void main(String[] args) {
+        CodeTimeCache cache = new CodeTimeCache();
+        Map<String, Object> cacheMap = toMap(cache);
+        StringBuilder content = new StringBuilder();
+        for (Map.Entry<String, Object> entry : cacheMap.entrySet()) {
+            content.append(entry.getKey()).append(CSV_SPILT).append(entry.getValue()).append(CSV_LINE);
+        }
+        String file = "/Users/zoe/Downloads/text.txt";
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+            IOUtils.write(content.toString().getBytes(), fileOutputStream);
+            LogUtils.info("persistence csv file : {} success ", file);
+        } catch (Exception e) {
+            LogUtils.error("persistence csv file: {} error : {}", file, e.getMessage());
+        }
+    }
 
-    abstract String getPersistenceCsvFilename(Object... args);
+    protected abstract String getPersistenceCsvFilename(Object... args);
 
     @Override
     public void doPersistence(T cache, Object... args) {
@@ -48,7 +64,7 @@ public abstract class CsvFilePersistence<T extends Cache> implements Persistence
         }
     }
 
-    private Map<String, Object> toMap(Cache cache) {
+    private static Map<String, Object> toMap(Cache cache) {
         Map<String, Object> result = new HashMap<>();
         Class<? extends Cache> target = cache.getClass();
         Field[] fields = target.getDeclaredFields();
@@ -64,9 +80,9 @@ public abstract class CsvFilePersistence<T extends Cache> implements Persistence
         return result;
     }
 
-    abstract T newInstance();
+    protected abstract T newInstance();
 
-    abstract void initData(Map<String, String> csvDataMap, T cache);
+    protected abstract void initData(Map<String, String> csvDataMap, T cache);
 
     @Override
     public T dePersistence(Object... args) {

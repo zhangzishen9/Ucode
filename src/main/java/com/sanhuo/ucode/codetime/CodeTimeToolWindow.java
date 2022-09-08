@@ -43,7 +43,7 @@ public class CodeTimeToolWindow extends AbstractToolWindow {
     }
 
     @Override
-    JPanel getContent() {
+    public JPanel getContent() {
         return content;
     }
 }
