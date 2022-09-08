@@ -80,7 +80,7 @@
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Decrease Code Number"/>
+          <text value="Increase Code Number"/>
         </properties>
       </component>
       <component id="e53dd" class="javax.swing.JLabel">
@@ -88,7 +88,7 @@
           <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Increase Code Number"/>
+          <text value="Decrease Code Number"/>
         </properties>
       </component>
       <component id="1c9eb" class="javax.swing.JLabel" binding="YesterdayIncreaseCodeNumber">

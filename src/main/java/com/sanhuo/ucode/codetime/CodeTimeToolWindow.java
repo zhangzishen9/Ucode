@@ -37,8 +37,8 @@ public class CodeTimeToolWindow extends AbstractToolWindow {
         IncreaseCodeNumber.setText(codeTimeCache.getIncreaseCodeNumber() + "");
         DecreaseCodeNumber.setText(codeTimeCache.getDecreaseCodeNumber() + "");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        YesterdayDecreaseCodeNumber.setText(yesterdayCache != null ? yesterdayCache.getIncreaseCodeNumber() + "" : "0");
-        YesterdayIncreaseCodeNumber.setText(yesterdayCache != null ? yesterdayCache.getDecreaseCodeNumber() + "" : "0");
+        YesterdayDecreaseCodeNumber.setText(yesterdayCache != null ? yesterdayCache.getDecreaseCodeNumber() + "" : "0");
+        YesterdayIncreaseCodeNumber.setText(yesterdayCache != null ? yesterdayCache.getIncreaseCodeNumber() + "" : "0");
         Today.setText(sdf.format(codeTimeCache.getCacheDate() != null ? codeTimeCache.getCacheDate() : new Date()));
     }
 
