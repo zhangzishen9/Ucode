@@ -4,6 +4,7 @@ import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import com.sanhuo.ucode.codetime.CodeTimeEventHandler;
+import com.sanhuo.ucode.codetime.CodeTimeEventSkipRule;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +27,7 @@ public class CodeEditListener implements DocumentListener {
 
     @Override
     public void documentChanged(@NotNull DocumentEvent event) {
-        if (isMultiLine(event)) {
+        if (CodeTimeEventSkipRule.isSkip(event)) {
             return;
         }
         try {
@@ -55,16 +56,6 @@ public class CodeEditListener implements DocumentListener {
     }
 
 
-    /**
-     * 一次变动多行的不计算
-     * @param documentEvent
-     * @return
-     */
-    private boolean isMultiLine(DocumentEvent documentEvent) {
-        String text = documentEvent.getNewFragment() != null ? documentEvent.getNewFragment().toString() : "";
-        String oldText = documentEvent.getOldFragment() != null ? documentEvent.getOldFragment().toString() : "";
-        return text.contains("\r") || text.contains("\n") || oldText.contains("\n") || oldText.contains("\r");
-    }
 
 
 }
